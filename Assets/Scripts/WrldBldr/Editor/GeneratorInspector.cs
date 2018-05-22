@@ -25,7 +25,14 @@ namespace WrldBldr
 			GUILayout.EndHorizontal ();
 
 			if (GUILayout.Button ("Generate"))
+			{
+				Debug.Log ("".PadRight (100, '-'));
 				g.generate ();
+			}
+
+			GUI.enabled = false;
+			if (GUILayout.Button ("Generate NOW"))
+				g.generateImmediate ();
 		}
 
 		private int getRegionCount(Region r)

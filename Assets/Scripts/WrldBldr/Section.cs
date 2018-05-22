@@ -13,7 +13,6 @@ namespace WrldBldr
 
 		private const string prefabPath = "Section";
 
-		private static System.Random randGen;
 		#endregion
 
 		#region INSTANCE_VARS
@@ -29,11 +28,6 @@ namespace WrldBldr
 		#endregion
 
 		#region STATIC_METHODS
-
-		static Section()
-		{
-			randGen = new System.Random (System.DateTime.Now.Millisecond);
-		}
 
 		public static Section create(Vector2 position, Archetype type = Archetype.normal)
 		{
@@ -63,7 +57,7 @@ namespace WrldBldr
 				return Color.white;
 
 			case Archetype.end:
-				return Color.red;
+				return Color.gray;
 
 			default:
 				return Color.magenta;
@@ -76,7 +70,7 @@ namespace WrldBldr
 		/// <returns>AdjDirection representing a cardinal direction</returns>
 		public static AdjDirection getRandomDirection()
 		{
-			int d = randGen.Next (0, System.Enum.GetNames (typeof (AdjDirection)).Length - 1);
+			int d = Random.Range (0, System.Enum.GetNames (typeof (AdjDirection)).Length - 1);
 			d = (d / 2) * 2;
 
 			return (AdjDirection)d;
@@ -199,7 +193,8 @@ namespace WrldBldr
 
 		public bool isAdjSpaceFree(AdjDirection dir)
 		{
-			Collider2D col = Physics2D.OverlapPoint (getDirection (dir) + (Vector2)transform.position, Physics2D.AllLayers);
+			Vector2 d = getDirection (dir);
+			Collider2D col = Physics2D.OverlapPoint (d + (Vector2)transform.position, Physics2D.AllLayers);
 			return col == null;
 		}
 

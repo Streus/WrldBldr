@@ -86,7 +86,7 @@ namespace WrldBldr
 				subRegions[i].clear ();
 		}
 
-		public void beginPlacement()
+		public void beginPlacement(bool distrubuted = true)
 		{
 			clear ();
 
@@ -95,18 +95,21 @@ namespace WrldBldr
 			sections = new List<Section> ();
 			sections.Add (start);
 
-			StartCoroutine (placeRooms (start));
+			if (distrubuted)
+				StartCoroutine (placeRooms (start));
+			else
+			{
+				while (placeRooms (start).MoveNext ());
+			}
 		}
 
-		private IEnumerator placeRooms(Section start)
+		private IEnumerator placeRooms(Section start, bool distributed = true)
 		{
 			//make the rooms
 			Queue<Section> activeRooms = new Queue<Section> ();
 			activeRooms.Enqueue (start);
 			Section curr;
 			Section prev = null;
-
-			System.Random rgen = new System.Random (System.DateTime.Now.Millisecond);
 
 			//main placement loop
 			while (sections.Count < targetSize + 1)
@@ -134,7 +137,7 @@ namespace WrldBldr
 				Section.AdjDirection[] deck = curr.getFreeRooms ();
 				if (deck.Length > 0)
 				{
-					int subRooms = rgen.Next (1, deck.Length);
+					int subRooms = Random.Range (1, deck.Length);
 					shuffleDeck (deck, 1);
 					for (int i = 0; i < subRooms; i++)
 					{
@@ -167,8 +170,17 @@ namespace WrldBldr
 					if (subStart != null)
 					{
 						subStart.setColor (subRegions[i].debugColor);
+
+						//pass off ownership of new start to subregion
 						subStart.assignSet (subRegions[i]);
-						subRegions[i].StartCoroutine (subRegions[i].placeRooms (subStart));
+						subRegions[i].sections.Add (subStart);
+						sections.Remove (subStart);
+
+						//start generation of subregion
+						if (distributed)
+							subRegions[i].StartCoroutine (subRegions[i].placeRooms (subStart));
+						else
+							yield return subRegions[i].placeRooms (subStart, distributed);
 						lastSection -= 2;
 					}
 					else
@@ -225,7 +237,7 @@ namespace WrldBldr
 		{
 			for (; startingIndex >= 0; startingIndex--)
 			{
-				if (sections[startingIndex].getFreeRooms ().Length > 0 && sections[startingIndex].hasFreeAdjSpace())
+				if (sections[startingIndex].hasFreeAdjSpace())
 				{
 					return sections[startingIndex];
 				}
@@ -236,6 +248,6 @@ namespace WrldBldr
 		{
 			return findFreeSection (ref startingIndex);
 		}
-		#endregion
+#endregion
 	}
 }

@@ -66,6 +66,15 @@ namespace WrldBldr
 #endif
 			startRegion.beginPlacement ();
 		}
+
+		public void generateImmediate()
+		{
+#if UNITY_EDITOR
+			if (!UnityEditor.EditorApplication.isPlaying)
+				return;
+#endif
+			startRegion.beginPlacement (false);
+		}
 		#endregion
 
 		#region INTERNAL_TYPES

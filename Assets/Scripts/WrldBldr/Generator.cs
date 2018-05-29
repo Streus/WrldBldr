@@ -18,6 +18,9 @@ namespace WrldBldr
 		private Region startRegion;
 
 		[SerializeField]
+		private Vector3 sectionScale = Vector3.one;
+
+		[SerializeField]
 		private float generationDelay = 0f;
 
 		#endregion
@@ -51,6 +54,11 @@ namespace WrldBldr
 		public Region getStartRegion()
 		{
 			return startRegion;
+		}
+
+		public Vector3 getSectionScale()
+		{
+			return sectionScale;
 		}
 
 		public float getGenerationDelay()

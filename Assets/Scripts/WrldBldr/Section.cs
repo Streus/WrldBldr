@@ -33,6 +33,7 @@ namespace WrldBldr
 		{
 			GameObject pref = Resources.Load<GameObject> (prefabPath);
 			GameObject inst = Instantiate<GameObject> (pref, position, Quaternion.identity);
+			inst.transform.localScale = Generator.getInstance ().getSectionScale ();
 			Section room = inst.GetComponent<Section> ();
 			room.setArchtype (type);
 			return room;
@@ -82,6 +83,7 @@ namespace WrldBldr
 			float segments = System.Enum.GetNames (typeof (AdjDirection)).Length;
 			float angle = (offset / segments) * 360f;
 			Vector2 direction = Quaternion.Euler (0f, 0f, angle) * Vector2.right;
+			direction.Scale (Generator.getInstance ().getSectionScale ());
 			return direction;
 		}
 		#endregion
@@ -93,6 +95,7 @@ namespace WrldBldr
 			adjSections = new Section[System.Enum.GetNames (typeof (AdjDirection)).Length];
 		}
 
+#if UNITY_EDITOR
 		public void Update()
 		{
 			for (int i = 0; i < adjSections.Length; i++)
@@ -103,6 +106,7 @@ namespace WrldBldr
 				Debug.DrawLine (transform.position, adjSections[i].transform.position, set.getDebugColor());
 			}
 		}
+#endif
 
 		public void assignSet(Region set)
 		{
@@ -161,7 +165,6 @@ namespace WrldBldr
 		public Section addAdjRoom(AdjDirection dir, Archetype type = Archetype.normal)
 		{
 			Vector2 direction = getDirection (dir);
-			direction.Scale (transform.localScale);
 			Section adj = create ((Vector2)transform.position + direction, type);
 			setAdjRoom (dir, adj);
 			return adj;

@@ -13,7 +13,7 @@ namespace WrldBldr
 
 		#region INSTANCE_VARS
 
-		[Header("Options")]
+		[Header("Generation Options")]
 		[SerializeField]
 		private Region startRegion;
 
@@ -22,6 +22,10 @@ namespace WrldBldr
 
 		[SerializeField]
 		private float generationDelay = 0f;
+
+		[Header ("Tileset Options")]
+		[SerializeField]
+		private TileSet[] tileSets;
 
 		#endregion
 
@@ -66,22 +70,43 @@ namespace WrldBldr
 			return generationDelay;
 		}
 
+		/// <summary>
+		/// Basic generation method via coroutines. Increases runtime but less
+		/// likely to freeze up.
+		/// </summary>
 		public void generate()
 		{
 #if UNITY_EDITOR
 			if (!UnityEditor.EditorApplication.isPlaying)
 				return;
 #endif
+			startRegion.generationCompleted += placeTiles;
 			startRegion.beginPlacement ();
 		}
 
+		/// <summary>
+		/// Generate everything in a single update.  Will most likely cause
+		/// freezes.
+		/// </summary>
 		public void generateImmediate()
 		{
 #if UNITY_EDITOR
 			if (!UnityEditor.EditorApplication.isPlaying)
 				return;
 #endif
+			startRegion.generationCompleted += placeTiles;
 			startRegion.beginPlacement (false);
+		}
+
+		private void placeTiles()
+		{
+			startRegion.generationCompleted -= placeTiles;
+			Debug.Log ("Generation Complete!");
+		}
+
+		public void OnGUI()
+		{
+			
 		}
 		#endregion
 

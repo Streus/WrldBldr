@@ -17,12 +17,16 @@ namespace WrldBldr
 		[SerializeField]
 		private bool hasEnd = true;
 
-		// 
+		// List of all the regions that branch from this region
 		[SerializeField]
 		private Region[] subRegions;
 
 		// List of all the sections that are members of this region
 		private List<Section> sections;
+
+		// Used to track generation cycle progress
+		private bool generationDone = false;
+		public event BasicNotify generationCompleted;
 
 		#endregion
 
@@ -166,6 +170,9 @@ namespace WrldBldr
 					if (subRegions[i] == null)
 						continue;
 
+					//listen to subregion's generation completion events
+					subRegions[i].generationCompleted += tryNotifyCompleted;
+
 					Section subStart = findFreeSection (ref lastSection);
 					if (subStart != null)
 					{
@@ -189,9 +196,17 @@ namespace WrldBldr
 					}
 				}
 			}
-			else if (hasEnd)
-				//done, mark the end
-				prev.setArchtype (Section.Archetype.end);
+			else
+			{
+				if (hasEnd)
+				{
+					//done, mark the end
+					prev.setArchtype (Section.Archetype.end);
+				}
+				generationDone = true;
+				if (generationCompleted != null)
+					generationCompleted ();
+			}
 		}
 
 		private Section makeRoom(Section parent, Section.AdjDirection dir, Section.Archetype type = Section.Archetype.normal)
@@ -248,6 +263,34 @@ namespace WrldBldr
 		{
 			return findFreeSection (ref startingIndex);
 		}
-#endregion
+
+		/// <summary>
+		/// Will invoke the generationCompleted event if all subregions have finished generation
+		/// </summary>
+		private void tryNotifyCompleted()
+		{
+			if (getSubRegionCompletion () && generationCompleted != null)
+				generationCompleted ();
+		}
+
+		/// <summary>
+		/// Get the completion status of all subregions
+		/// </summary>
+		/// <returns>True if all subregions have finished, false otherwise</returns>
+		private bool getSubRegionCompletion()
+		{
+			for (int i = 0; i < subRegions.Length; i++)
+			{
+				if (!subRegions[i].generationDone)
+					return false;
+			}
+			return true;
+		}
+		#endregion
+
+		#region INTERNAL_TYPES
+
+		public delegate void BasicNotify();
+		#endregion
 	}
 }

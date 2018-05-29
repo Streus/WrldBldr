@@ -451,6 +451,8 @@ MonoBehaviour:
   startRegion: {fileID: 1155455069}
   sectionScale: {x: 2, y: 2, z: 1}
   generationDelay: 0
+  tileSets:
+  - {fileID: 0}
 --- !u!4 &2105151516
 Transform:
   m_ObjectHideFlags: 0

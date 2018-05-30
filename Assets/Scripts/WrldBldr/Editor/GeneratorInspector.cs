@@ -15,8 +15,8 @@ namespace WrldBldr
 			GUILayout.Label ("Stats", EditorStyles.boldLabel);
 
 			GUILayout.BeginHorizontal ();
-			GUILayout.Label ("Section Count:");
-			GUILayout.Label (g.getStartRegion ().getFullTargetSize ().ToString ());
+			GUILayout.Label ("Section Count\n(Current/Target):");
+			GUILayout.Label (g.getStartRegion().getFullSectionCount() + " / " + g.getStartRegion ().getFullTargetSize ());
 			GUILayout.EndHorizontal ();
 
 			GUILayout.BeginHorizontal ();

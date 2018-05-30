@@ -77,6 +77,14 @@ namespace WrldBldr
 			return (AdjDirection)d;
 		}
 
+		public static AdjDirection offsetDirection(AdjDirection dir, int amount)
+		{
+			int max = System.Enum.GetNames (typeof (AdjDirection)).Length;
+			while (amount < 0)
+				amount += max;
+			return (AdjDirection)(((int)dir + amount) % max);
+		}
+
 		public static Vector2 getDirection(AdjDirection dir)
 		{
 			int offset = (int)dir;
@@ -150,10 +158,40 @@ namespace WrldBldr
 			return adjSections[(int)index];
 		}
 
-		public void setAdjRoom(AdjDirection index, Section room)
+		/// <summary>
+		/// Make a connection between this section and another. Also makes diagonal connections where valid.
+		/// </summary>
+		/// <param name="index">The direction relative to this section the connection is being made</param>
+		/// <param name="room">The section being connected to</param>
+		/// <param name="reverseConnections">Make connections from the other section to this section</param>
+		public void setAdjRoom(AdjDirection index, Section room, bool reverseConnections = true)
 		{
+			AdjDirection diagDir;
+			Section diag;
+			float r = Random.value, chance = 0.2f;
+
+			//outgoing connections
 			adjSections[(int)index] = room;
-			room.adjSections[((int)index + 4) % adjSections.Length] = this;
+			diag = room.adjSections[(int)offsetDirection (index, 2)];
+			if (diag != null && r < chance)
+			{
+				//outgoing and incoming diagonal connection
+				diagDir = offsetDirection (index, 1);
+				adjSections[(int)diagDir] = diag;
+				diag.adjSections[(int)offsetDirection(diagDir, 4)] = this;
+			}
+			diag = room.adjSections[(int)offsetDirection (index, -2)];
+			if (diag != null && r < chance)
+			{
+				//outgoing and incoming diagonal connection
+				diagDir = offsetDirection (index, -1);
+				adjSections[(int)diagDir] = diag;
+				diag.adjSections[(int)offsetDirection(diagDir, 4)] = this;
+			}
+
+			//incoming connections
+			if(reverseConnections)
+				room.setAdjRoom (offsetDirection(index, 4), this, false);
 		}
 
 		/// <summary>

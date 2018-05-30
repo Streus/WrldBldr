@@ -80,7 +80,7 @@ namespace WrldBldr
 			if (!UnityEditor.EditorApplication.isPlaying)
 				return;
 #endif
-			startRegion.generationCompleted += placeTiles;
+			startRegion.generationCompleted += endGeneration;
 			startRegion.beginPlacement ();
 		}
 
@@ -94,19 +94,33 @@ namespace WrldBldr
 			if (!UnityEditor.EditorApplication.isPlaying)
 				return;
 #endif
-			startRegion.generationCompleted += placeTiles;
+			startRegion.generationCompleted += endGeneration;
 			startRegion.beginPlacement (false);
 		}
 
-		private void placeTiles()
+		private void endGeneration()
 		{
-			startRegion.generationCompleted -= placeTiles;
-			Debug.Log ("Generation Complete!");
+			startRegion.generationCompleted -= endGeneration;
+			Debug.Log ("[WB] Generation Complete!");
+			TileSet set = tileSets[Random.Range (0, tileSets.Length - 1)];
+			if (set == null)
+			{
+				Debug.LogError ("Null tileset in tileset array.");
+				return;
+			}
+			StartCoroutine (placeTiles (set));
+		}
+
+		private IEnumerator placeTiles(TileSet set)
+		{
+			yield return null;
+			Debug.Log ("Placing Tiles.\nUsing " + set.name + " tile set.");
 		}
 
 		public void OnGUI()
 		{
-			
+			GUI.backgroundColor = Color.white;
+			GUI.Box (new Rect (0f, Screen.height - 200, (float)startRegion.getFullSectionCount() / startRegion.getFullTargetSize(), 200f), "Loading...");
 		}
 		#endregion
 

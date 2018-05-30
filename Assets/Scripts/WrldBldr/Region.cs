@@ -58,6 +58,29 @@ namespace WrldBldr
 			return debugColor;
 		}
 
+		public int getSectionCount()
+		{
+			if(sections != null)
+				return sections.Count;
+			return 0;
+		}
+
+		public int getFullSectionCount()
+		{
+			int fsc = getSectionCount ();
+			for (int i = 0; i < subRegions.Length; i++)
+			{
+				if (subRegions[i] != null)
+					fsc += subRegions[i].getFullSectionCount ();
+			}
+			return fsc;
+		}
+
+		public Section getSection(int index)
+		{
+			return sections[index];
+		}
+
 		public int getSubRegionCount()
 		{
 			return subRegions.Length;

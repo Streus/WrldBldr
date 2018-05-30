@@ -33,7 +33,9 @@ public class TileSetInspector : Editor
 			//start array indexes
 			for (int i = 0; i < tiles.arraySize; i++)
 			{
-				EditorGUILayout.PropertyField (tiles.GetArrayElementAtIndex (i), new GUIContent (i.ToString ()));
+				Texture2D tileImage = AssetDatabase.LoadAssetAtPath<Texture2D> ("Assets/Sprites/Editor/BasicTileset_" + i);
+				EditorGUILayout.LabelField (new GUIContent (tileImage));
+				EditorGUILayout.PropertyField (tiles.GetArrayElementAtIndex (i), new GUIContent (tileImage));
 			}
 			EditorGUI.indentLevel--;
 		}

@@ -4,5 +4,5 @@
 public class TileSet : ScriptableObject
 {
 	[SerializeField]
-	private GameObject[] tiles = new GameObject[48];
+	private GameObject[] tiles = new GameObject[15];
 }

@@ -47,7 +47,7 @@ namespace WrldBldr
 			}
 			else
 			{
-				Debug.LogWarning ("An instance of " + typeof (Generator).Name + " already exists!");
+				Debug.LogWarning ("[WB] An instance of " + typeof (Generator).Name + " already exists!");
 #if UNITY_EDITOR
 				UnityEditor.EditorGUIUtility.PingObject (instance);
 #endif
@@ -105,7 +105,7 @@ namespace WrldBldr
 			TileSet set = tileSets[Random.Range (0, tileSets.Length - 1)];
 			if (set == null)
 			{
-				Debug.LogError ("Null tileset in tileset array.");
+				Debug.LogError ("[WB] Null tileset in tileset array.");
 				return;
 			}
 			StartCoroutine (placeTiles (set));
@@ -114,7 +114,7 @@ namespace WrldBldr
 		private IEnumerator placeTiles(TileSet set)
 		{
 			yield return null;
-			Debug.Log ("Placing Tiles.\nUsing " + set.name + " tile set.");
+			Debug.Log ("[WB] Placing Tiles.\nUsing " + set.name + " tile set.");
 		}
 
 		public void OnGUI()

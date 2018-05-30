@@ -123,14 +123,18 @@ namespace WrldBldr
 			sections.Add (start);
 
 			if (distrubuted)
-				StartCoroutine (placeRooms (start));
+				StartCoroutine (placeSections (start));
 			else
 			{
-				while (placeRooms (start).MoveNext ());
+				IEnumerator m = placeSections (start);
+				while (m.MoveNext ())
+				{
+					Debug.Log ("[WB] Generating " + gameObject.name);
+				}
 			}
 		}
 
-		private IEnumerator placeRooms(Section start, bool distributed = true)
+		private IEnumerator placeSections(Section start, bool distributed = true)
 		{
 			//make the rooms
 			Queue<Section> activeRooms = new Queue<Section> ();
@@ -208,9 +212,9 @@ namespace WrldBldr
 
 						//start generation of subregion
 						if (distributed)
-							subRegions[i].StartCoroutine (subRegions[i].placeRooms (subStart));
+							subRegions[i].StartCoroutine (subRegions[i].placeSections (subStart));
 						else
-							yield return subRegions[i].placeRooms (subStart, distributed);
+							yield return subRegions[i].placeSections (subStart, distributed);
 						lastSection -= 2;
 					}
 					else

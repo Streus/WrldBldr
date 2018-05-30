@@ -6,6 +6,8 @@ namespace WrldBldr
 	[CustomEditor(typeof(Generator))]
 	public class GeneratorInspector : Editor
 	{
+		private bool immediateGen = false;
+
 		public override void OnInspectorGUI()
 		{
 			DrawDefaultInspector ();
@@ -24,15 +26,15 @@ namespace WrldBldr
 			GUILayout.Label (getRegionCount(g.getStartRegion ()).ToString());
 			GUILayout.EndHorizontal ();
 
+			immediateGen = EditorGUILayout.ToggleLeft ("Immediate Gen", immediateGen);
+
 			if (GUILayout.Button ("Generate"))
 			{
-				Debug.Log ("".PadRight (100, '-'));
-				g.generate ();
+				if(immediateGen)
+					g.generateImmediate ();
+				else
+					g.generate ();
 			}
-
-			GUI.enabled = false;
-			if (GUILayout.Button ("Generate NOW"))
-				g.generateImmediate ();
 		}
 
 		private int getRegionCount(Region r)

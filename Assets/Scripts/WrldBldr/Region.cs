@@ -113,7 +113,7 @@ namespace WrldBldr
 				subRegions[i].clear ();
 		}
 
-		public void beginPlacement(bool distrubuted = true)
+		public void beginPlacement(bool distributed = true)
 		{
 			clear ();
 
@@ -122,15 +122,12 @@ namespace WrldBldr
 			sections = new List<Section> ();
 			sections.Add (start);
 
-			if (distrubuted)
+			if (distributed)
 				StartCoroutine (placeSections (start));
 			else
 			{
-				IEnumerator m = placeSections (start);
-				while (m.MoveNext ())
-				{
-					Debug.Log ("[WB] Generating " + gameObject.name);
-				}
+				IEnumerator m = placeSections (start, distributed);
+				while (m.MoveNext ()) { }
 			}
 		}
 
@@ -143,7 +140,7 @@ namespace WrldBldr
 			Section prev = null;
 
 			//main placement loop
-			while (sections.Count < targetSize + 1)
+			while (sections.Count <= targetSize)
 			{
 				//pop off the next room
 				//if no new active rooms were made, return to the last active room processed
@@ -161,8 +158,10 @@ namespace WrldBldr
 				}
 
 				//set the color of the currently active room
+				//only done in distributed generation cycles
 				Color currDefCol = curr.getColor ();
-				curr.setColor (Color.yellow);
+				if (distributed)
+					curr.setColor (Color.yellow);
 
 				//place a random number of rooms in the available free spaces
 				Section.AdjDirection[] deck = curr.getFreeRooms ();
@@ -183,7 +182,9 @@ namespace WrldBldr
 				yield return new WaitForSeconds (Generator.getInstance().getGenerationDelay());
 
 				//return the color of the active room
-				curr.setColor (currDefCol);
+				if (distributed)
+					curr.setColor (currDefCol);
+
 				prev = curr;
 			}
 
@@ -197,7 +198,7 @@ namespace WrldBldr
 					if (subRegions[i] == null)
 						continue;
 
-					//listen to subregion's generation completion events
+					//listen to subregion's generation completion event
 					subRegions[i].generationCompleted += tryNotifyCompleted;
 
 					Section subStart = findFreeSection (ref lastSection);
@@ -214,8 +215,12 @@ namespace WrldBldr
 						if (distributed)
 							subRegions[i].StartCoroutine (subRegions[i].placeSections (subStart));
 						else
-							yield return subRegions[i].placeSections (subStart, distributed);
-						lastSection -= 2;
+						{
+							IEnumerator m = subRegions[i].placeSections (subStart, distributed);
+							while (m.MoveNext ())
+							{ }
+						}
+						lastSection -= 3;
 					}
 					else
 					{
@@ -312,6 +317,12 @@ namespace WrldBldr
 					return false;
 			}
 			return true;
+		}
+
+		private void placeTiles(TileSet set)
+		{
+			HashSet<Section> visited = new HashSet<Section> ();
+			Queue<Section> active = new Queue<Section> ();
 		}
 		#endregion
 

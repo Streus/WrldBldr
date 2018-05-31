@@ -30,10 +30,7 @@ namespace WrldBldr
 
 			if (GUILayout.Button ("Generate"))
 			{
-				if(immediateGen)
-					g.generateImmediate ();
-				else
-					g.generate ();
+				g.generate (immediateGen);
 			}
 		}
 

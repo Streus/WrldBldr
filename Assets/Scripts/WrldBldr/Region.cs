@@ -110,7 +110,10 @@ namespace WrldBldr
 			}
 
 			for (int i = 0; i < subRegions.Length; i++)
-				subRegions[i].clear ();
+			{
+				if(subRegions[i] != null)
+					subRegions[i].clear ();
+			}
 		}
 
 		public void beginPlacement(bool distributed = true)
@@ -159,9 +162,8 @@ namespace WrldBldr
 
 				//set the color of the currently active room
 				//only done in distributed generation cycles
-				Color currDefCol = curr.getColor ();
 				if (distributed)
-					curr.setColor (Color.yellow);
+					curr.selected = true;
 
 				//place a random number of rooms in the available free spaces
 				Section.AdjDirection[] deck = curr.getFreeRooms ();
@@ -183,7 +185,7 @@ namespace WrldBldr
 
 				//return the color of the active room
 				if (distributed)
-					curr.setColor (currDefCol);
+					curr.selected = false;
 
 				prev = curr;
 			}
@@ -204,8 +206,6 @@ namespace WrldBldr
 					Section subStart = findFreeSection (ref lastSection);
 					if (subStart != null)
 					{
-						subStart.setColor (subRegions[i].debugColor);
-
 						//pass off ownership of new start to subregion
 						subStart.assignSet (subRegions[i]);
 						subRegions[i].sections.Add (subStart);
@@ -321,8 +321,10 @@ namespace WrldBldr
 
 		private void placeTiles(TileSet set)
 		{
-			HashSet<Section> visited = new HashSet<Section> ();
-			Queue<Section> active = new Queue<Section> ();
+			for (int i = 0; i < sections.Count; i++)
+			{
+
+			}
 		}
 		#endregion
 

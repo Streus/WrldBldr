@@ -17,8 +17,7 @@ namespace WrldBldr
 
 		#region INSTANCE_VARS
 
-		[SerializeField]
-		private SpriteRenderer rend;
+		public bool selected = false;
 
 		private Archetype archtype;
 
@@ -104,14 +103,24 @@ namespace WrldBldr
 		}
 
 #if UNITY_EDITOR
-		public void Update()
+		public void OnDrawGizmos()
 		{
+			if (selected)
+				Gizmos.color = Color.yellow;
+			else
+				Gizmos.color = getArchetypeColor (getArchetype ());
+			
+			Gizmos.DrawCube (transform.position, transform.localScale);
+
+			Gizmos.color = set.getDebugColor ();
+			Gizmos.DrawWireCube (transform.position, transform.localScale);
+			Gizmos.color = Color.white;
 			for (int i = 0; i < adjSections.Length; i++)
 			{
 				if (adjSections[i] == null)
 					continue;
 
-				Debug.DrawLine (transform.position, adjSections[i].transform.position, set.getDebugColor());
+				Gizmos.DrawLine (transform.position, adjSections[i].transform.position);
 			}
 		}
 #endif
@@ -132,16 +141,6 @@ namespace WrldBldr
 			return this.set == set;
 		}
 
-		public Color getColor()
-		{
-			return rend.color;
-		}
-
-		public void setColor(Color val)
-		{
-			rend.color = val;
-		}
-
 		public Archetype getArchetype()
 		{
 			return archtype;
@@ -150,7 +149,6 @@ namespace WrldBldr
 		public void setArchtype(Archetype type)
 		{
 			archtype = type;
-			setColor (getArchetypeColor (type));
 		}
 
 		public Section getAdjRoom(AdjDirection index)

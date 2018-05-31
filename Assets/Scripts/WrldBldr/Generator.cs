@@ -27,6 +27,8 @@ namespace WrldBldr
 		[SerializeField]
 		private TileSet[] tileSets;
 
+		private string statusText;
+
 		#endregion
 
 		#region STATIC_METHODS
@@ -44,6 +46,7 @@ namespace WrldBldr
 			if (instance == null)
 			{
 				instance = this;
+				statusText = "Initializing";
 			}
 			else
 			{
@@ -70,32 +73,29 @@ namespace WrldBldr
 			return generationDelay;
 		}
 
-		/// <summary>
-		/// Basic generation method via coroutines. Increases runtime but less
-		/// likely to freeze up.
-		/// </summary>
-		public void generate()
+		public float getGenerationProgress()
 		{
-#if UNITY_EDITOR
-			if (!UnityEditor.EditorApplication.isPlaying)
-				return;
-#endif
-			startRegion.generationCompleted += endGeneration;
-			startRegion.beginPlacement ();
+			return (float)startRegion.getFullSectionCount () / startRegion.getFullTargetSize ();
+		}
+
+		public string getCurrentStageText()
+		{
+			return statusText;
 		}
 
 		/// <summary>
-		/// Generate everything in a single update.  Will most likely cause
-		/// freezes.
+		/// Create a dungeon using the current starting region
 		/// </summary>
-		public void generateImmediate()
+		/// <param name="immediate">True to use coroutine method, false to generate in one step</param>
+		public void generate(bool immediate)
 		{
 #if UNITY_EDITOR
 			if (!UnityEditor.EditorApplication.isPlaying)
 				return;
 #endif
 			startRegion.generationCompleted += endGeneration;
-			startRegion.beginPlacement (false);
+			startRegion.beginPlacement (!immediate);
+			statusText = "Generating Regions";
 		}
 
 		private void endGeneration()
@@ -109,18 +109,15 @@ namespace WrldBldr
 				return;
 			}
 			StartCoroutine (placeTiles (set));
+			statusText = "Placing Tiles";
 		}
 
 		private IEnumerator placeTiles(TileSet set)
 		{
 			yield return null;
 			Debug.Log ("[WB] Placing Tiles.\nUsing " + set.name + " tile set.");
-		}
 
-		public void OnGUI()
-		{
-			GUI.backgroundColor = Color.white;
-			GUI.Box (new Rect (0f, Screen.height - 200, (float)startRegion.getFullSectionCount() / startRegion.getFullTargetSize(), 200f), "Loading...");
+
 		}
 		#endregion
 

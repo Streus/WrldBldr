@@ -13,7 +13,6 @@ namespace WrldBldr
 			DrawDefaultInspector ();
 			Generator g = (Generator)target;
 
-			
 			GUILayout.Label ("Stats", EditorStyles.boldLabel);
 
 			GUILayout.BeginHorizontal ();
@@ -26,11 +25,9 @@ namespace WrldBldr
 			GUILayout.Label (getRegionCount(g.getStartRegion ()).ToString());
 			GUILayout.EndHorizontal ();
 
-			immediateGen = EditorGUILayout.ToggleLeft ("Immediate Gen", immediateGen);
-
 			if (GUILayout.Button ("Generate"))
 			{
-				g.generate (immediateGen);
+				g.generate ();
 			}
 		}
 

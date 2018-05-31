@@ -475,7 +475,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5981a1478f5fa0144ac3d6e86c1e0358, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugColor: {r: 0, g: 1, b: 1, a: 1}
+  debugColor: {r: 0, g: 0, b: 1, a: 1}
   targetSize: 100
   hasEnd: 0
   subRegions:
@@ -598,7 +598,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5981a1478f5fa0144ac3d6e86c1e0358, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugColor: {r: 0, g: 0, b: 1, a: 1}
+  debugColor: {r: 0, g: 1, b: 0, a: 1}
   targetSize: 100
   hasEnd: 0
   subRegions:
@@ -643,7 +643,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5981a1478f5fa0144ac3d6e86c1e0358, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugColor: {r: 1, g: 1, b: 0, a: 1}
+  debugColor: {r: 0, g: 1, b: 1, a: 1}
   targetSize: 100
   hasEnd: 0
   subRegions:
@@ -736,7 +736,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5981a1478f5fa0144ac3d6e86c1e0358, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugColor: {r: 0, g: 1, b: 0, a: 1}
+  debugColor: {r: 1, g: 1, b: 0, a: 1}
   targetSize: 100
   hasEnd: 0
   subRegions:
@@ -1178,11 +1178,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3b1d1047413e8e4cbf021acfa951b81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startRegion: {fileID: 1584433409}
-  sectionScale: {x: 1, y: 1, z: 1}
+  startRegion: {fileID: 897524968}
+  sectionScale: {x: 0.5, y: 0.5, z: 0.5}
   generationDelay: 0
+  immediateGeneration: 0
   tileSets:
-  - {fileID: 11400000, guid: add9a25067f7f6e42b05f0ec481f8f8d, type: 2}
+  - {fileID: 0}
 --- !u!4 &2105151516
 Transform:
   m_ObjectHideFlags: 0

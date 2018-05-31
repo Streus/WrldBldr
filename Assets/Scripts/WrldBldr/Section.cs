@@ -260,6 +260,11 @@ namespace WrldBldr
 
 			return mask;
 		}
+
+		public void chooseTile(TileSet set)
+		{
+
+		}
 		#endregion
 
 		#region INTERNAL_TYPES

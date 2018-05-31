@@ -23,11 +23,14 @@ namespace WrldBldr
 		[SerializeField]
 		private float generationDelay = 0f;
 
+		[SerializeField]
+		private bool immediateGeneration = false;
+
 		[Header ("Tileset Options")]
 		[SerializeField]
 		private TileSet[] tileSets;
 
-		private string statusText;
+		private GenerationStage stage;
 
 		#endregion
 
@@ -46,7 +49,6 @@ namespace WrldBldr
 			if (instance == null)
 			{
 				instance = this;
-				statusText = "Initializing";
 			}
 			else
 			{
@@ -75,27 +77,36 @@ namespace WrldBldr
 
 		public float getGenerationProgress()
 		{
-			return (float)startRegion.getFullSectionCount () / startRegion.getFullTargetSize ();
+			int stages = System.Enum.GetValues (typeof (GenerationStage)).Length;
+			float regionGen = (float)startRegion.getFullSectionCount () / startRegion.getFullTargetSize ();
+			float tilePlacement = 0f;
+			return (regionGen / stages) + (tilePlacement / stages);
 		}
 
 		public string getCurrentStageText()
 		{
-			return statusText;
+			switch (stage)
+			{
+			case GenerationStage.region_gen:
+				return "Generating Regions";
+			case GenerationStage.tile_placement:
+				return "Placing Tiles";
+			}
+			return "";
 		}
 
 		/// <summary>
 		/// Create a dungeon using the current starting region
 		/// </summary>
-		/// <param name="immediate">True to use coroutine method, false to generate in one step</param>
-		public void generate(bool immediate)
+		public void generate()
 		{
 #if UNITY_EDITOR
 			if (!UnityEditor.EditorApplication.isPlaying)
 				return;
 #endif
+			stage = GenerationStage.region_gen;
 			startRegion.generationCompleted += endGeneration;
-			startRegion.beginPlacement (!immediate);
-			statusText = "Generating Regions";
+			startRegion.beginPlacement (!immediateGeneration);
 		}
 
 		private void endGeneration()
@@ -108,21 +119,46 @@ namespace WrldBldr
 				Debug.LogError ("[WB] Null tileset in tileset array.");
 				return;
 			}
-			StartCoroutine (placeTiles (set));
-			statusText = "Placing Tiles";
+			stage = GenerationStage.tile_placement;
+			if (!immediateGeneration)
+				StartCoroutine (placeTiles (set));
+			else
+			{
+				IEnumerator m = placeTiles (set);
+				while (m.MoveNext ()) { }
+			}
 		}
 
 		private IEnumerator placeTiles(TileSet set)
 		{
 			yield return null;
 			Debug.Log ("[WB] Placing Tiles.\nUsing " + set.name + " tile set.");
+			Queue<Region> regions = new Queue<Region> ();
+			getRegionSubregions (startRegion, regions);
 
+			while (regions.Count > 0)
+			{
+				regions.Dequeue ().placeTiles (set);
+				yield return new WaitForSeconds (getGenerationDelay ());
+			}
+		}
 
+		private void getRegionSubregions(Region start, Queue<Region> regions)
+		{
+			regions.Enqueue (start);
+			for (int i = 0; i < start.getSubRegionCount (); i++)
+			{
+				if(start.getSubRegion(i) != null)
+					getRegionSubregions (start.getSubRegion (i), regions);
+			}
 		}
 		#endregion
 
 		#region INTERNAL_TYPES
-
+		private enum GenerationStage
+		{
+			region_gen, tile_placement, feature_placement
+		}
 		#endregion
 	}
 }

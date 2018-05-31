@@ -311,19 +311,28 @@ namespace WrldBldr
 		/// <returns>True if all subregions have finished, false otherwise</returns>
 		private bool getSubRegionCompletion()
 		{
+			if (!generationDone)
+				return false;
 			for (int i = 0; i < subRegions.Length; i++)
 			{
-				if (!subRegions[i].generationDone)
+				if (subRegions[i] == null)
+					continue;
+
+				if (!subRegions[i].getSubRegionCompletion())
 					return false;
 			}
 			return true;
 		}
 
-		private void placeTiles(TileSet set)
+		/// <summary>
+		/// Tell each section in this region to pick and place a tile from the given set based on their adjacency state
+		/// </summary>
+		/// <param name="set">The set to take tiles from</param>
+		public void placeTiles(TileSet set)
 		{
 			for (int i = 0; i < sections.Count; i++)
 			{
-
+				sections[i].chooseTile (set);
 			}
 		}
 		#endregion

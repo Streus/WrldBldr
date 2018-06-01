@@ -11,7 +11,7 @@ namespace WrldBldr
 			Section room = (Section)target;
 
 			EditorGUILayout.LabelField (room.getArchetype().ToString());
-			EditorGUILayout.LabelField (System.Convert.ToString (room.getAdjMask (), 2).PadLeft (8, '0'));
+			EditorGUILayout.LabelField (System.Convert.ToString (room.getAdjMask (), 2).PadLeft (16, '0'));
 		}
 	}
 }

@@ -12,18 +12,33 @@ MonoBehaviour:
   m_Name: BasicTileset
   m_EditorClassIdentifier: 
   tiles:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - checkVector: 21845
+    prefab: {fileID: 1401028743911248, guid: 670f926beef4948448f8a0c534ba3d47, type: 2}
+  - checkVector: 39320
+    prefab: {fileID: 1281937004003060, guid: 4c94ca4c92f5e694ca96434166636779, type: 2}
+  - checkVector: 22848
+    prefab: {fileID: 1399966567656928, guid: b38604b95a812de4d8b77b48b692e7bd, type: 2}
+  - checkVector: 22852
+    prefab: {fileID: 1928502612659980, guid: 3ec7d57ef3ece5f42bed2f556802b51a, type: 2}
+  - checkVector: 35209
+    prefab: {fileID: 1931732582830528, guid: bc80346610875754dac50a8d3dce81e0, type: 2}
+  - checkVector: 18820
+    prefab: {fileID: 1955203840486364, guid: 31d4cf423c864bb4eb78dcf6e73eb6a0, type: 2}
+  - checkVector: 18816
+    prefab: {fileID: 1666578804140034, guid: 44e7eb322ac9fc34d865cb6d27681a16, type: 2}
+  - checkVector: 33801
+    prefab: {fileID: 1574018511281536, guid: 4afe819a059f0f54ea416453543e2dda, type: 2}
+  - checkVector: 2432
+    prefab: {fileID: 1775080067707742, guid: 9d2afacd946f76347b2aedbdc805b57f, type: 2}
+  - checkVector: 17476
+    prefab: {fileID: 1033287823964670, guid: f443da377e45a4a43803c6c2ebe16f01, type: 2}
+  - checkVector: 17472
+    prefab: {fileID: 1722574130991494, guid: 014ec8923b5967b4d8f2b2571dbaf639, type: 2}
+  - checkVector: 1088
+    prefab: {fileID: 1072859805652842, guid: 5c4373ea1ce22bc4cbe64e307a7e8224, type: 2}
+  - checkVector: 16448
+    prefab: {fileID: 1914456600051284, guid: 5e51046654b598b4a9f78d7021d041b0, type: 2}
+  - checkVector: 64
+    prefab: {fileID: 1955891849924716, guid: 840f2ca03158c7649a2b37c41d425d7a, type: 2}
+  - checkVector: 0
+    prefab: {fileID: 1894961816938706, guid: cb7bc41b17ffb3945b9ac78c8097f37e, type: 2}

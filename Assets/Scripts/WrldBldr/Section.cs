@@ -51,7 +51,7 @@ namespace WrldBldr
 			switch (type)
 			{
 			case Archetype.normal:
-				return Color.black;
+				return new Color(0f, 0f, 0f, 0.5f);
 
 			case Archetype.start:
 				return Color.white;
@@ -254,7 +254,7 @@ namespace WrldBldr
 			{
 				if (adjSections[i] != null)
 				{
-					mask |= 1 << i;
+					mask |= 1 << (i * 2);
 				}
 			}
 
@@ -263,7 +263,12 @@ namespace WrldBldr
 
 		public void chooseTile(TileSet set)
 		{
-
+			float rotation;
+			GameObject go = set.getTile (getAdjMask (), out rotation);
+			if (go == null)
+				throw new System.NullReferenceException ("Tileset returned a null tile! Set: " + set.name + ".");
+			GameObject inst = Instantiate<GameObject> (go, transform, false);
+			inst.transform.Rotate (0f, 0f, rotation);
 		}
 		#endregion
 

@@ -311,6 +311,7 @@ namespace WrldBldr
 		/// <returns>True if all subregions have finished, false otherwise</returns>
 		private bool getSubRegionCompletion()
 		{
+			//FIXME this don't work in chain region cases
 			if (!generationDone)
 				return false;
 			for (int i = 0; i < subRegions.Length; i++)

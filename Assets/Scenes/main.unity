@@ -432,7 +432,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debugColor: {r: 0, g: 1, b: 1, a: 1}
-  targetSize: 1000
+  targetSize: 30
   hasEnd: 1
   subRegions: []
 --- !u!4 &897524969
@@ -1179,11 +1179,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startRegion: {fileID: 897524968}
-  sectionScale: {x: 0.5, y: 0.5, z: 0.5}
+  sectionScale: {x: 1, y: 1, z: 1}
   generationDelay: 0
   immediateGeneration: 0
   tileSets:
-  - {fileID: 0}
+  - {fileID: 11400000, guid: add9a25067f7f6e42b05f0ec481f8f8d, type: 2}
 --- !u!4 &2105151516
 Transform:
   m_ObjectHideFlags: 0

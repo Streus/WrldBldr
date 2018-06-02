@@ -20,6 +20,8 @@ public class TileSet : ScriptableObject
 		 * 2 -> Ignored
 		 * 3 -> (unused)
 		 */
+
+		//FIXME need to invert everything and swap solid block and empty space
 		tiles = new Tile[15];
 		tiles[ 0] = new Tile (0x5555); //solid block
 		tiles[ 1] = new Tile (0x9998); //corridor end
@@ -71,26 +73,30 @@ public class TileSet : ScriptableObject
 
 	private int QARAnd(int left, int right)
 	{
-		int res = 0x0;
-		for (int i = 0; i < 8; i ++)
-		{
-			//shift the result left two bits
-			res <<= 0x2;
+		string l, r, f;
+		l = System.Convert.ToString (left, 2).PadLeft (16, '0');
+		r = System.Convert.ToString (right, 2).PadLeft (16, '0');
 
-			//isolate two least sig bits
-			int lm = left % 4, rm = right % 4;
+		int res = 0x0;
+		for (int i = 0; i < 16; i += 2)
+		{
+			//isolate two least sig bits of each operand
+			int lm = left & 0x3, rm = right & 0x3;
 
 			//if either is the ignored value, pass it through
 			if (lm == 0x2 || rm == 0x2)
-				res |= 0x2;
+				res |= 0x2 << i;
 			//else do regular 'AND' stuff
 			else
-				res |= lm & rm;
+				res |= (lm & rm) << i;
 
 			//shift the operands right two bits
-			left >>= 0x2;
-			right >>= 0x2;
+			left >>= 2;
+			right >>= 2;
 		}
+
+		f = System.Convert.ToString (res, 2).PadLeft (16, '0');
+		Debug.Log (l +" & " + r + " = " + f); //DEBUG
 
 		return res;
 	}

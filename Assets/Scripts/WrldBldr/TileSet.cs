@@ -63,7 +63,7 @@ public class TileSet : ScriptableObject
 				}
 
 				//rotate the check vector
-				Tile.rotateCVLeft (cv);
+				cv = Tile.rotateCVLeft (cv);
 			}
 		}
 
@@ -114,7 +114,7 @@ public class TileSet : ScriptableObject
 		/// <returns>The original int rotated left four bits (bits wrap)</returns>
 		public static int rotateCVLeft(int original)
 		{
-			return (original << 4) | (original >> (sizeof (ushort) - 4));
+			return ((original << 4) | (original >> 14)) & 65535;
 		}
 
 		// Used to identify this tile

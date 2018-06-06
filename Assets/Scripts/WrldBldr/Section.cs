@@ -30,12 +30,17 @@ namespace WrldBldr
 
 		public static Section create(Vector2 position, Archetype type = Archetype.normal)
 		{
-			GameObject pref = Resources.Load<GameObject> (prefabPath);
-			GameObject inst = Instantiate<GameObject> (pref, position, Quaternion.identity);
-			inst.transform.localScale = Generator.getInstance ().getSectionScale ();
-			Section room = inst.GetComponent<Section> ();
-			room.setArchtype (type);
-			return room;
+			GameObject sec = new GameObject (typeof (Section).Name);
+			Section s = sec.AddComponent<Section> ();
+			Bounds b = sec.AddComponent<BoxCollider2D> ().bounds;
+			b.size = new Vector3 (0.9f, 0.9f, 0f);
+
+			sec.transform.position = position;
+			sec.transform.rotation = Quaternion.identity;
+			sec.transform.localScale = Generator.getInstance ().getSectionScale ();
+
+			s.setArchtype (type);
+			return s;
 		}
 
 		public static Section create(Region set, Vector2 position, Archetype type = Archetype.normal)

@@ -122,8 +122,10 @@ namespace WrldBldr
 
 			//start new map
 			Section start = Section.create (this, Vector2.zero, Section.Archetype.start);
+			start.gameObject.name += " 0";
 			sections = new List<Section> ();
 			sections.Add (start);
+			start.assignSet (this);
 
 			if (distributed)
 				StartCoroutine (placeSections (start));
@@ -256,6 +258,7 @@ namespace WrldBldr
 
 			//no overlap, make a new room
 			Section child = parent.addAdjRoom (dir);
+			child.gameObject.name += " " + sections.Count;
 			child.assignSet (this);
 			sections.Add (child);
 			return child;

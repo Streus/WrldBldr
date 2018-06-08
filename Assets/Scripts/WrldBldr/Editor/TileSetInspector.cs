@@ -34,18 +34,7 @@ public class TileSetInspector : Editor
 			for (int i = 0; i < tiles.arraySize; i++)
 			{
 				SerializedProperty prop = tiles.GetArrayElementAtIndex (i);
-				int cv = prop.FindPropertyRelative ("checkVector").intValue;
-
-				EditorGUILayout.BeginVertical ();
-				EditorGUI.indentLevel++;
-
-				EditorGUILayout.SelectableLabel (System.Convert.ToString (cv, 2).PadLeft (16, '0'));
-				EditorGUILayout.PropertyField (prop.FindPropertyRelative("prefab"), new GUIContent (AssetDatabase.LoadAssetAtPath<Texture2D> ("Assets/Sprites/Edtitor/BasicTileset_0"), i + ""));
-
-				EditorGUILayout.EndVertical ();
-				EditorGUI.indentLevel--;
-
-				EditorGUILayout.Space ();
+				EditorGUILayout.PropertyField (prop.FindPropertyRelative("prefab"), new GUIContent(prop.FindPropertyRelative ("name").stringValue));
 			}
 			EditorGUI.indentLevel--;
 		}

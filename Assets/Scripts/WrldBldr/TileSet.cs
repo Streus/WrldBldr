@@ -21,23 +21,22 @@ public class TileSet : ScriptableObject
 		 * 3 -> (unused)
 		 */
 
-		//FIXME need to invert everything and swap solid block and empty space
 		tiles = new Tile[15];
-		tiles[ 0] = new Tile (0x5555); //solid block
-		tiles[ 1] = new Tile (0x9998); //corridor end
-		tiles[ 2] = new Tile (0x5940); //room corner
-		tiles[ 3] = new Tile (0x5944); //corridor turn
-		tiles[ 4] = new Tile (0x8989); //corridor
-		tiles[ 5] = new Tile (0x4984); //t-corridor
-		tiles[ 6] = new Tile (0x4980); //corridor side entry 1
-		tiles[ 7] = new Tile (0x8409); //corridor side entry 2
-		tiles[ 8] = new Tile (0x980 ); //room side
-		tiles[ 9] = new Tile (0x4444); //corridor cross
-		tiles[10] = new Tile (0x4440); //corridor double entry
-		tiles[11] = new Tile (0x440 ); //corridor entry
-		tiles[12] = new Tile (0x4040); //double inner corner
-		tiles[13] = new Tile (0x40  ); //inner corner
-		tiles[14] = new Tile (0x0   ); //empty space
+		tiles[ 0] = new Tile ("Solid Block",			0x0   , 1);
+		tiles[ 1] = new Tile ("Corridor End",			0x9998, 4);
+		tiles[ 2] = new Tile ("Corridor Corner",		0x811 , 4);
+		tiles[ 3] = new Tile ("Room Corner",			0x8895, 4);
+		tiles[ 4] = new Tile ("Corridor",				0x8989, 2);
+		tiles[ 5] = new Tile ("T-Corridor",				0x1891, 4);
+		tiles[ 6] = new Tile ("Corridor Side Entry 1",	0x5891, 4);
+		tiles[ 7] = new Tile ("Corridor Side Entry 2",	0x1895, 4);
+		tiles[ 8] = new Tile ("Room Wall",				0x5895, 4);
+		tiles[ 9] = new Tile ("Corridor Cross",			0x1111, 1);
+		tiles[10] = new Tile ("Corridor Corner Entry",	0x1115, 4);
+		tiles[11] = new Tile ("Corridor Wall Entry",	0x5115, 4);
+		tiles[12] = new Tile ("Strait",					0x1515, 2);
+		tiles[13] = new Tile ("Inner Corner",			0x5515, 4);
+		tiles[14] = new Tile ("Room Center",			0x5555, 1);
 	}
 
 	public void Reset()
@@ -49,12 +48,12 @@ public class TileSet : ScriptableObject
 	{
 		rotation = 0f;
 
-		for (int i = 0; i < tiles.Length; i++)
+		for (int i = tiles.Length - 1; i >= 0; i--)
 		{
 			int cv = tiles[i].getCheckVector ();
 
 			//check all four orientations of the tile
-			for (int rot = 0; rot < 4; rot++)
+			for (int rot = 0; rot < tiles[i].getRotations(); rot++)
 			{
 				if (cv == QARAnd (cv, adjMask))
 				{
@@ -63,7 +62,7 @@ public class TileSet : ScriptableObject
 				}
 
 				//rotate the check vector
-				cv = Tile.rotateCVLeft (cv);
+				cv = Tile.rotateCVLeft (cv, 4, 16);
 			}
 		}
 
@@ -108,32 +107,51 @@ public class TileSet : ScriptableObject
 	public struct Tile
 	{
 		/// <summary>
-		/// Rotates the given int four bits to the left.
+		/// Bitwise rotates an int left by amount within a given width
 		/// </summary>
-		/// <param name="original">The int to rotate</param>
-		/// <returns>The original int rotated left four bits (bits wrap)</returns>
-		public static int rotateCVLeft(int original)
+		/// <param name="original">The int to bitwise rotate</param>
+		/// <param name="amount">The amount to rotate</param>
+		/// <param name="bitwidth">The maximum width of the returned int</param>
+		/// <returns>original rotated left by amount within bitwidth</returns>
+		public static int rotateCVLeft(int original, int amount, int bitwidth)
 		{
-			return ((original << 4) | (original >> 14)) & 65535;
+			int shifted = original << amount;
+			int overflow = original >> (bitwidth - amount);
+			int widthMask = bitwidth - 1;
+			return (shifted | overflow) & widthMask;
 		}
+
+		// For user-identification in the inspector
+		public string name;
 
 		// Used to identify this tile
 		// Represents the adjacency conditions that must be met to place this tile
 		[SerializeField]
 		private int checkVector;
 
+		// This tile represents this many distict tiles that are rotations of one another
+		[SerializeField]
+		private int rotations;
+
 		// The object placed in the scene
 		public GameObject prefab;
 
-		public Tile(int cv)
+		public Tile(string name, int cv, int rotations)
 		{
+			this.name = name;
 			checkVector = cv;
+			this.rotations = rotations;
 			prefab = null;
 		}
 
 		public int getCheckVector()
 		{
 			return checkVector;
+		}
+
+		public int getRotations()
+		{
+			return rotations;
 		}
 	}
 	#endregion

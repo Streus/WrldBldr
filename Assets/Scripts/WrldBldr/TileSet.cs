@@ -117,7 +117,7 @@ public class TileSet : ScriptableObject
 		{
 			int shifted = original << amount;
 			int overflow = original >> (bitwidth - amount);
-			int widthMask = bitwidth - 1;
+			int widthMask = (1 << bitwidth) - 1;
 			return (shifted | overflow) & widthMask;
 		}
 

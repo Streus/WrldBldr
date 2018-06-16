@@ -9,7 +9,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6122dbb8e01842c49b013d50d8226648, type: 3}
-  m_Name: 
+  m_Name: BasicTileset
   m_EditorClassIdentifier: 
   tiles:
   - name: Solid Block
@@ -39,11 +39,11 @@ MonoBehaviour:
   - name: Corridor Side Entry 1
     checkVector: 22673
     rotations: 4
-    prefab: {fileID: 1574018511281536, guid: 4afe819a059f0f54ea416453543e2dda, type: 2}
+    prefab: {fileID: 1666578804140034, guid: 44e7eb322ac9fc34d865cb6d27681a16, type: 2}
   - name: Corridor Side Entry 2
     checkVector: 6293
     rotations: 4
-    prefab: {fileID: 1666578804140034, guid: 44e7eb322ac9fc34d865cb6d27681a16, type: 2}
+    prefab: {fileID: 1574018511281536, guid: 4afe819a059f0f54ea416453543e2dda, type: 2}
   - name: Room Wall
     checkVector: 22677
     rotations: 4

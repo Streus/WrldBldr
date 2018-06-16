@@ -40,6 +40,10 @@ public class TileSetInspector : Editor
 		}
 		EditorGUILayout.EndFadeGroup ();
 
-		obj.ApplyModifiedProperties ();
+		if (GUI.changed)
+		{
+			obj.ApplyModifiedProperties ();
+			EditorUtility.SetDirty (target);
+		}
 	}
 }

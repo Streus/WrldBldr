@@ -14,7 +14,6 @@ public class TileSet : ScriptableObject
 	private TileSet()
 	{
 		setToDefaults ();
-		Debug.Log ("New Tileset Created."); //DEBUG
 	}
 
 	public void setToDefaults()
@@ -24,25 +23,25 @@ public class TileSet : ScriptableObject
 		 * 0 -> No neighbor
 		 * 1 -> Neighbor
 		 * 2 -> Ignored
-		 * 3 -> (unused)
+		 * 3 -> Wildcard
 		 */
 
 		tiles = new Tile[15];
-		tiles[0] = new Tile ("Solid Block", 0x0, 1);
-		tiles[1] = new Tile ("Corridor End", 0x9998, 4);
-		tiles[2] = new Tile ("Corridor Corner", 0x811, 4);
-		tiles[3] = new Tile ("Room Corner", 0x8895, 4);
-		tiles[4] = new Tile ("Corridor", 0x8989, 2);
-		tiles[5] = new Tile ("T-Corridor", 0x1891, 4);
-		tiles[6] = new Tile ("Corridor Side Entry 1", 0x5891, 4);
-		tiles[7] = new Tile ("Corridor Side Entry 2", 0x1895, 4);
-		tiles[8] = new Tile ("Room Wall", 0x5895, 4);
-		tiles[9] = new Tile ("Corridor Cross", 0x1111, 1);
-		tiles[10] = new Tile ("Corridor Corner Entry", 0x1115, 4);
-		tiles[11] = new Tile ("Corridor Wall Entry", 0x5115, 4);
-		tiles[12] = new Tile ("Strait", 0x1515, 2);
-		tiles[13] = new Tile ("Inner Corner", 0x5515, 4);
-		tiles[14] = new Tile ("Room Center", 0x5555, 1);
+		tiles[0 ] = new Tile ("Solid Block",			0x0   , 1);
+		tiles[1 ] = new Tile ("Corridor End",			0x8898, 4);
+		tiles[2 ] = new Tile ("Corridor Corner",		0x811 , 4);
+		tiles[3 ] = new Tile ("Room Corner",			0x8895, 4);
+		tiles[4 ] = new Tile ("Corridor",				0x8989, 2);
+		tiles[5 ] = new Tile ("T-Corridor",				0x1891, 4);
+		tiles[6 ] = new Tile ("Corridor Side Entry 1",	0x5891, 4);
+		tiles[7 ] = new Tile ("Corridor Side Entry 2",	0x1895, 4);
+		tiles[8 ] = new Tile ("Room Wall",				0x5895, 4);
+		tiles[9 ] = new Tile ("Corridor Cross",			0x1111, 1);
+		tiles[10] = new Tile ("Corridor Corner Entry",	0x1115, 4);
+		tiles[11] = new Tile ("Corridor Wall Entry",	0x5115, 4);
+		tiles[12] = new Tile ("Strait",					0x1515, 2);
+		tiles[13] = new Tile ("Inner Corner",			0x5515, 4);
+		tiles[14] = new Tile ("Room Center",			0x5555, 1);
 	}
 
 	public void Reset()
@@ -78,10 +77,6 @@ public class TileSet : ScriptableObject
 
 	private int QARAnd(int left, int right)
 	{
-		string l, r, f;
-		l = System.Convert.ToString (left, 2).PadLeft (16, '0');
-		r = System.Convert.ToString (right, 2).PadLeft (16, '0');
-
 		int res = 0x0;
 		for (int i = 0; i < 16; i += 2)
 		{
@@ -99,9 +94,6 @@ public class TileSet : ScriptableObject
 			left >>= 2;
 			right >>= 2;
 		}
-
-		f = System.Convert.ToString (res, 2).PadLeft (16, '0');
-		Debug.Log (l +" & " + r + " = " + f); //DEBUG
 
 		return res;
 	}

@@ -238,8 +238,7 @@ namespace WrldBldr
 					prev.setArchtype (Section.Archetype.end);
 				}
 				generationDone = true;
-				if (generationCompleted != null)
-					generationCompleted ();
+				tryNotifyCompleted ();
 			}
 		}
 
@@ -304,28 +303,10 @@ namespace WrldBldr
 		/// </summary>
 		private void tryNotifyCompleted()
 		{
-			if (getSubRegionCompletion () && generationCompleted != null)
-				generationCompleted ();
-		}
-
-		/// <summary>
-		/// Get the completion status of all subregions
-		/// </summary>
-		/// <returns>True if all subregions have finished, false otherwise</returns>
-		private bool getSubRegionCompletion()
-		{
-			//FIXME this don't work in chain region cases
-			if (!generationDone)
-				return false;
-			for (int i = 0; i < subRegions.Length; i++)
+			if (generationCompleted != null)
 			{
-				if (subRegions[i] == null)
-					continue;
-
-				if (!subRegions[i].getSubRegionCompletion())
-					return false;
+				generationCompleted ();
 			}
-			return true;
 		}
 
 		/// <summary>

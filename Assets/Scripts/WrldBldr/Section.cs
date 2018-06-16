@@ -171,7 +171,7 @@ namespace WrldBldr
 		{
 			AdjDirection diagDir;
 			Section diag;
-			float r = Random.value, chance = 0.2f;
+			float r = Random.value, chance = 1f;
 
 			//outgoing connections
 			adjSections[(int)index] = room;
@@ -258,9 +258,7 @@ namespace WrldBldr
 			for (int i = 0; i < adjSections.Length; i++)
 			{
 				if (adjSections[i] != null)
-				{
 					mask |= 1 << (i * 2);
-				}
 			}
 
 			return mask;

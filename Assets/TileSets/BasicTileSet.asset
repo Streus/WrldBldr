@@ -17,7 +17,7 @@ MonoBehaviour:
     rotations: 1
     prefab: {fileID: 1401028743911248, guid: 670f926beef4948448f8a0c534ba3d47, type: 2}
   - name: Corridor End
-    checkVector: 39320
+    checkVector: 34968
     rotations: 4
     prefab: {fileID: 1281937004003060, guid: 4c94ca4c92f5e694ca96434166636779, type: 2}
   - name: Corridor Corner
@@ -39,11 +39,11 @@ MonoBehaviour:
   - name: Corridor Side Entry 1
     checkVector: 22673
     rotations: 4
-    prefab: {fileID: 1666578804140034, guid: 44e7eb322ac9fc34d865cb6d27681a16, type: 2}
+    prefab: {fileID: 1574018511281536, guid: 4afe819a059f0f54ea416453543e2dda, type: 2}
   - name: Corridor Side Entry 2
     checkVector: 6293
     rotations: 4
-    prefab: {fileID: 1574018511281536, guid: 4afe819a059f0f54ea416453543e2dda, type: 2}
+    prefab: {fileID: 1666578804140034, guid: 44e7eb322ac9fc34d865cb6d27681a16, type: 2}
   - name: Room Wall
     checkVector: 22677
     rotations: 4

@@ -432,7 +432,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debugColor: {r: 0, g: 1, b: 1, a: 1}
-  targetSize: 30
+  targetSize: 100
   hasEnd: 1
   subRegions: []
 --- !u!4 &897524969
